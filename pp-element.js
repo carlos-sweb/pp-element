@@ -18,7 +18,10 @@
 })(function( root , exports , _is , _events) {
 
   var addClass = function( el , styleClass ){
-        el.classList.add(styleClass);
+      _is.isElement(el,function(element){
+          element.classList.add(styleClass);
+      })
+
   }
 
   var removeClass = function( el , styleClass ){
@@ -26,7 +29,11 @@
   }
 
   var hasClass = function( el , styleClass ){
-       return el.classList.contains(styleClass);
+    return _is.isElement(el,function(element){
+      return _is.isString(styleClass,function( sc ){
+          return element.classList.contains(sc);
+      })
+    })
   }
   var attr = function( el , attribute , value ){
       /*
@@ -58,27 +65,48 @@
     */
   }
   var html = function( el , html ){
-      el.innerHTML = html;
+      _is.isElement(el,function(element){
+          element.innerHTML = html;
+      })
+
   }
 
+  var text = function( el  , text ){
+    _is.isElement(el,function(element){
+        element.innerText = text;
+    })
+  }
+  // Main Object
   var element = function( elem ){
-      this.elem = elem;
-      this.addClass = function( styleClass){
-          addClass( this.elem , styleClass )
-      }
-      this.hasClass = function( styleClass){
-        return hasClass( this.elem ,styleClass  )
-      }
+    this.elem = elem;
+  }
 
-      this.html = function( _html ){
-        html( this.elem , _html );
-      }
-
+  var proto = element.prototype;
+  proto.addClass = function( styleClass ){
+      addClass( this.elem , styleClass )
+  }
+  proto.hasClass = function( styleClass ){
+      return hasClass( this.elem ,styleClass  )
+  }
+  proto.html = function( _html ){
+      html( this.elem , _html );
+  }
+  proto.text = function( _text ){
+      text( this.elem , _text );
   }
 
 
   return function(  elem ){
-      return new element( elem );
+
+        if( _is.isString( elem )  ){
+             return new element( document.queryselector( elem ) );
+        }
+        if( _is.isElement( elem )  ){
+            return new element( elem );
+        }
+
+        return new element( null );
+
   }
 
 
