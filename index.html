@@ -13,7 +13,7 @@
 </head>
 <body>
 
-<h1 id="title" >Title</h1>
+<h1 id="title" data-id="hola a todos" >Title</h1>
 
 <script src="https://cdn.jsdelivr.net/npm/pp-is@latest/pp-is.min.js" ></script>
 <script type="text/javascript" src="pp-element.js"></script>
@@ -26,6 +26,17 @@
   }
 
   element.text("aaaaaaaaaaaaaa");
+
+  element.on('click',function( e ){
+      console.log( e );
+      this.hasClass('red') ? this.removeClass('red') : this.addClass('red');
+  });
+
+  // ---------------------------------------------------------------------------
+  element.trigger('click' , {
+    text : "Este es un evento con data "
+  });
+
 
 </script>
 </body>

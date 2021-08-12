@@ -25,7 +25,11 @@
   }
 
   var removeClass = function( el , styleClass ){
-        el.classList.remove(styleClass);
+        _is.isElement(el, function( element ){
+            _is.isString(styleClass,function( sc ){
+                element.classList.remove( sc );
+            })
+        })
   }
 
   var hasClass = function( el , styleClass ){
@@ -35,7 +39,20 @@
       })
     })
   }
+
+  // ===========================================================================
   var attr = function( el , attribute , value ){
+      return _is.isElement( el , function( element ){
+            return _is.isString( attribute , function( attr ){
+                  if( _is.isUndefined( value ) ){
+                    return element.getAttribute( attr );
+                  }else if( _is.isNull( value ) ){
+                    return element.removeAttribute( attr );
+                  }else{
+                    return element.setAttribute( attr , value);
+                  }
+            } );
+      });
       /*
       var form = $('form')
       form.attr('action')             //=> read value
@@ -76,14 +93,38 @@
         element.innerText = text;
     })
   }
+
+  var on = function( el,  eventName , func ){
+    _is.isElement( el , function( element ){
+
+      if( _is.isString( eventName ) && _is.isFunction( func ) ){
+          element.addEventListener( eventName , function( e ){
+              func.bind(this)( e )
+          }.bind(this) , false );
+      }
+    }.bind(this))
+  }
+
+  var trigger = function( el, eventName ){
+    _is.isElement( el , function( element ){
+        _is.isString( eventName , function( name ){
+             el.dispatchEvent(new Event('click'));
+        } )
+    })
+  }
+
   // Main Object
   var element = function( elem ){
     this.elem = elem;
   }
 
   var proto = element.prototype;
+
   proto.addClass = function( styleClass ){
       addClass( this.elem , styleClass )
+  }
+  proto.removeClass = function( styleClass ){
+      removeClass( this.elem , styleClass )
   }
   proto.hasClass = function( styleClass ){
       return hasClass( this.elem ,styleClass  )
@@ -95,18 +136,34 @@
       text( this.elem , _text );
   }
 
+  proto.on = function( eventName , func ){
+      on.bind(this)( this.elem , eventName , func );
+  }
+
+  proto.trigger = function( eventName ){
+      trigger( this.elem , eventName )
+  }
+
+  proto.attr = function( attribute , value ){
+      return attr( this.elem , attribute , value );
+  }
 
   return function(  elem ){
-
+        // =====================================================================
         if( _is.isString( elem )  ){
-             return new element( document.queryselector( elem ) );
+              try{
+                return new element( document.queryselector( elem ) );
+              }catch(e){
+                return new element( null );
+              }
         }
+        // =====================================================================
         if( _is.isElement( elem )  ){
             return new element( elem );
         }
-
+        // =====================================================================
         return new element( null );
-
+        // =====================================================================
   }
 
 
