@@ -28,7 +28,6 @@
   element.text("aaaaaaaaaaaaaa");
 
   element.on('click',function( e ){
-      console.log( e );
       this.hasClass('red') ? this.removeClass('red') : this.addClass('red');
   });
 
@@ -36,7 +35,7 @@
   element.trigger('click' , {
     text : "Este es un evento con data "
   });
-
+  
 
 </script>
 </body>
