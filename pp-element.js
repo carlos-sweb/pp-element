@@ -23,25 +23,25 @@
           element.classList.add(styleClass);
       })
 
-  }
+  },
   // ===========================================================================
-  var removeClass = function( el , styleClass ){
+  removeClass = function( el , styleClass ){
         _is.isElement(el, function( element ){
             _is.isString(styleClass,function( sc ){
                 element.classList.remove( sc );
             })
         })
-  }
+  },
   // ===========================================================================
-  var hasClass = function( el , styleClass ){
+  hasClass = function( el , styleClass ){
     return _is.isElement(el,function(element){
       return _is.isString(styleClass,function( sc ){
           return element.classList.contains(sc);
       })
     })
-  }
+  },
   // ===========================================================================
-  var attr = function( el , attribute , value ){
+  attr = function( el , attribute , value ){
       return _is.isElement( el , function( element ){
             return _is.isString( attribute , function( attr ){
                   if( _is.isUndefined( value ) ){
@@ -53,7 +53,7 @@
                   }
             } );
       });
-      
+
       /*
       var form = $('form')
       form.attr('action')             //=> read value
@@ -67,9 +67,9 @@
       })
       */
       //////////////////////////////////////////////77
-  }
+  },
   // ===========================================================================
-  var css = function(){
+  css = function(){
     /*
     var elem = $('h1')
     elem.css('background-color')          // read property
@@ -82,22 +82,22 @@
     // read multiple properties:
     elem.css(['backgroundColor', 'fontSize'])['fontSize']
     */
-  }
+  },
   // ===========================================================================
-  var html = function( el , html ){
+  html = function( el , html ){
       _is.isElement(el,function(element){
           element.innerHTML = html;
       })
 
-  }
+  },
   // ===========================================================================
-  var text = function( el  , text ){
+  text = function( el  , text ){
     _is.isElement(el,function(element){
         element.innerText = text;
     })
-  }
+  },
   // ===========================================================================
-  var on = function( el,  eventName , func ){
+  on = function( el,  eventName , func ){
     _is.isElement( el , function( element ){
 
       if( _is.isString( eventName ) && _is.isFunction( func ) ){
@@ -106,22 +106,40 @@
           }.bind(this) , false );
       }
     }.bind(this))
-  }
+  },
   // ===========================================================================
-  var trigger = function( el, eventName ){
+  trigger = function( el, eventName ){
     _is.isElement( el , function( element ){
         _is.isString( eventName , function( name ){
              el.dispatchEvent(new Event('click'));
         } )
     })
-  }
+  },
+  // ===========================================================================
+  value = function( el , val ){
+    return _is.isElement( el , function( element ){
+        if( !_is.isNull( val ) && !_is.isUndefined( val ) ){
+           return el.value = val;
+        }else if( _is.isFunction( val ) ){
+           return val( el.value , val  )
+        }else{
+          return el.value;
+        }
+    });
+    /*
+    val
+    val()  ⇒ string
+    val(value)  ⇒ self
+    val(function(index, oldValue){ ... })  ⇒ self
+    */
+  },
   // ===========================================================================
   // Main Object
-  var element = function( elem ){
+  element = function( elem ){
     this.elem = elem;
-  }
+  },
   // ===========================================================================
-  var proto = element.prototype;
+  proto = element.prototype;
   // ===========================================================================
   proto.addClass = function( styleClass ){
       addClass( this.elem , styleClass )
@@ -159,24 +177,17 @@
 
   }
   proto.height = function(){}
-
   proto.width = function(){}
-
-  proto.val = function(){
-    /*
-    val
-    val()  ⇒ string
-    val(value)  ⇒ self
-    val(function(index, oldValue){ ... })  ⇒ self
-    */
+  // ===========================================================================
+  proto.value = function( _value ){
+    return value( this.elem , _value );
   }
-
   // ===========================================================================
   return function(  elem ){
         // =====================================================================
         if( _is.isString( elem )  ){
               try{
-                return new element( document.queryselector( elem ) );
+                return new element( document.querySelector( elem ) );
               }catch(e){
                 return new element( null );
               }
