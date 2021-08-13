@@ -133,6 +133,8 @@
     val(function(index, oldValue){ ... })  ⇒ self
     */
   },
+  width  = function( el ){ return el.offsetWidth;  },
+  height = function( el ){ return el.offsetHeight; },
   // ===========================================================================
   // Main Object
   element = function( elem ){
@@ -176,8 +178,12 @@
       }
 
   }
-  proto.height = function(){}
-  proto.width = function(){}
+  proto.height = function(){
+    return height( this.elem );
+  }
+  proto.width = function(){
+    return width( this.elem );
+  }
   // ===========================================================================
   proto.value = function( _value ){
     return value( this.elem , _value );

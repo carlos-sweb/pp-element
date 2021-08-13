@@ -24,9 +24,9 @@
 <script>
 
 
- var search = ppElement('#search');
+   var search = ppElement('#search');
+   search.value("Hello");
 
- search.value("Hello");
 
   var element = ppElement( document.getElementById('title') );
 
@@ -44,6 +44,8 @@
   element.trigger('click' , {
     text : "Este es un evento con data "
   });
+
+
 
 
 </script>
