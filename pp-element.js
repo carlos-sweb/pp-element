@@ -14,7 +14,7 @@
   } else {
     root.ppElement = factory(root, {},  root.ppIs , root.ppEvents );
   }
-
+  
 })(function( root , exports , _is , _events ) {
 
   // ===========================================================================
@@ -53,20 +53,6 @@
                   }
             } );
       });
-
-      /*
-      var form = $('form')
-      form.attr('action')             //=> read value
-      form.attr('action', '/create')  //=> set value
-      form.attr('action', null)       //=> remove attribute
-
-      // multiple attributes:
-      form.attr({
-      action: '/create',
-      method: 'post'
-      })
-      */
-      //////////////////////////////////////////////77
   },
   // ===========================================================================
   css = function(){
@@ -146,31 +132,89 @@
   proto = element.prototype;
   // ===========================================================================
   proto.addClass = function( styleClass ){
-      addClass( this.elem , styleClass )
+      if( _is.isElement( this.elem)){
+          addClass( this.elem , styleClass )
+      }
+      if( _is.isArray( this.elem) ){
+        this.elem.forEach( function( elem ){
+          addClass( elem , styleClass )
+        })
+      }
+
   }
   // ===========================================================================
   proto.removeClass = function( styleClass ){
-      removeClass( this.elem , styleClass )
+      if( _is.isElement( this.elem ) ){
+          removeClass( this.elem , styleClass )
+      }
+      if( _is.isArray( this.elem) ){
+        this.elem.forEach( function( elem ){
+            removeClass( elem , styleClass )
+        });
+      }
+
   }
   // ===========================================================================
   proto.hasClass = function( styleClass ){
-      return hasClass( this.elem ,styleClass  )
+      if( _is.isElement( this.elem ) ){
+        return hasClass( this.elem ,styleClass  )
+      }
+      if( _is.isArray( this.elem ) ){
+        this.elem.forEach(function( elem ){
+          hasClass( elem ,styleClass  )
+        });
+        return null;
+      }
+
   }
   // ===========================================================================
   proto.html = function( _html ){
-      html( this.elem , _html );
+      if( _is.isElement( this.elem) ){
+        html( this.elem , _html );
+      }
+
+      if( _is.isArray( this.elem ) ){
+        this.elem.forEach(function( elem ){
+           html( elem , _html)
+        });
+      }
+
   }
   // ===========================================================================
   proto.text = function( _text ){
-      text( this.elem , _text );
+      if( _is.isElement( this.elem) ){
+        text( this.elem , _text );
+      }
+      if( _is.isArray( this.elem ) ){
+        this.elem.forEach(function(elem){
+          text( elem , _text);
+        })
+      }
   }
   // ===========================================================================
   proto.on = function( eventName , func ){
-      on.bind(this)( this.elem , eventName , func );
+      if( _is.isElement( this.elem) ){
+          on.bind(this)( this.elem , eventName , func );
+      }
+      if( _is.isArray( this.elem) ){
+        this.elem.forEach(function( elem ){
+            on.bind(this)( elem , eventName , func );
+        }.bind(this))
+      }
+
   }
   // ===========================================================================
   proto.trigger = function( eventName ){
-      trigger( this.elem , eventName )
+      if( _is.isElement( this.elem ) ){
+          trigger( this.elem , eventName )
+      }
+
+      if( _is.isArray( this.elem ) ){
+        this.elem.forEach(function( elem ){
+           trigger( elem , eventName )
+        });
+      }
+
   }
   // ===========================================================================
   proto.attr = function( attribute , value ){
@@ -202,14 +246,31 @@
 
   }
   proto.height = function(){
-    return height( this.elem );
+    if( _is.isElement( this.elem ) ){
+        return height( this.elem );
+    }
+    return null;
   }
   proto.width = function(){
-    return width( this.elem );
+    if( _is.isElement( this.elem ) ){
+      return width( this.elem );
+    }
+    return null;
   }
   // ===========================================================================
   proto.value = function( _value ){
-    return value( this.elem , _value );
+
+    if( _is.isElement( this.elem ) ){
+      return value( this.elem , _value );
+    }
+
+    if( _is.isArray( this.elem ) && _is.isString( _value ) ){
+      this.elem.forEach(function( elem ){
+          value( elem , _value );
+      });
+      return null;
+    }
+
   }
   // ===========================================================================
   return function(  elem ){
