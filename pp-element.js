@@ -133,8 +133,16 @@
     val(function(index, oldValue){ ... })  ⇒ self
     */
   },
-  width  = function( el ){ return el.offsetWidth;  },
-  height = function( el ){ return el.offsetHeight; },
+  width  = function( el ){
+    return _is.isElement( el , function( element ){
+        return element.offsetWidth;
+    } )
+  },
+  height = function( el ){
+    return _is.isElement( el, function( element ){
+      return element.offsetHeight;
+    })
+  },
   // ===========================================================================
   // Main Object
   element = function( elem ){
