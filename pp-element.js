@@ -17,6 +17,10 @@
 
 })(function( root , exports , _is , _events ) {
 
+
+
+
+
   // ===========================================================================
   var addClass = function( el , styleClass ){
       _is.isElement(el,function(element){
