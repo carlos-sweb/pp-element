@@ -13,10 +13,17 @@
 </head>
 <body>
 
-<h1 id="title" data-id="hola a todos" >Title</h1>
+
+<p id="title" >Hola a todos</p>
+
+<ul id="lista" >
+  <li>Lista uno</li>
+  <li>Lista dos</li>
+  <li>Lista tres</li>
+  <li>Lista cuatro</li>
+</ul>
 
 
-<input id="search" type="text">
 
 
 <script src="https://cdn.jsdelivr.net/npm/pp-is@latest/pp-is.min.js" ></script>
@@ -24,26 +31,26 @@
 <script>
 
 
-   var search = ppElement('#search');
-   search.value("Hello");
+  var li = ppElement('#lista>li');
+  console.log( li );
+  li.attr( 'data-src' , 'links' );
+  li.attr({
+    "contry":"chile",
+    "code":"algo"    
+  })
+  console.log( li.attr('data-src') );
+
+  var title = ppElement( "#title" );
+  console.log( title );
+  title.attr( 'data-src' , 'links' );
+  title.attr( {
+    "name":"Algo",
+    "otro":"aaaa",
+    "data-algo":"aaaaa"
+  } );
+  console.log( title.attr('data-src') );
 
 
-  var element = ppElement( document.getElementById('title') );
-
-  if( !element.hasClass('red') ){
-      element.addClass('red');
-  }
-
-  element.text("aaaaaaaaaaaaaa");
-
-  element.on('click',function( e ){
-      this.hasClass('red') ? this.removeClass('red') : this.addClass('red');
-  });
-
-  // ---------------------------------------------------------------------------
-  element.trigger('click' , {
-    text : "Este es un evento con data "
-  });
 
 
 

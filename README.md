@@ -1,5 +1,4 @@
 # pp-element
-⇒
 
 ## Getting Started
 In the web project include pp-element.js with:

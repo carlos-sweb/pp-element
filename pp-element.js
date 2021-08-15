@@ -17,13 +17,6 @@
 
 })(function( root , exports , _is , _events ) {
 
-
-// 
-
-
-
-
-
   // ===========================================================================
   var addClass = function( el , styleClass ){
       _is.isElement(el,function(element){
@@ -132,13 +125,7 @@
         }else{
           return el.value;
         }
-    });
-    /*
-    val
-    val()  ⇒ string
-    val(value)  ⇒ self
-    val(function(index, oldValue){ ... })  ⇒ self
-    */
+    })
   },
   width  = function( el ){
     return _is.isElement( el , function( element ){
@@ -189,7 +176,28 @@
   proto.attr = function( attribute , value ){
 
       if( _is.isString( attribute ) ){
-          return attr( this.elem , attribute , value );
+          if( _is.isArray( this.elem ) ){
+              this.elem.forEach( function( elem ){
+                  attr( elem , attribute , value );
+              } );
+              return null;
+          }else{
+            return attr( this.elem , attribute , value );
+          }
+      }
+
+      if( _is.isObject( attribute ) ){
+          var keyAttr = Object.keys( attribute );
+          for( var i = 0; i < keyAttr.length ; i++ ){
+            if( _is.isArray( this.elem ) ){
+                this.elem.forEach( function( elem ){
+                    attr( elem , keyAttr[i] , attribute[keyAttr[i]] );
+                } );
+            }else{
+                attr( this.elem , keyAttr[i] , attribute[keyAttr[i]] );
+            }
+          }
+          return null;
       }
 
   }
@@ -208,7 +216,12 @@
         // =====================================================================
         if( _is.isString( elem )  ){
               try{
-                return new element( document.querySelector( elem ) );
+                var querySelectorAll = document.querySelectorAll( elem );
+                if( querySelectorAll.length === 1 ){
+                  return new element( querySelectorAll[0] );
+                }else{
+                  return new element( Array.from(querySelectorAll) );
+                }
               }catch(e){
                 return new element( null );
               }
