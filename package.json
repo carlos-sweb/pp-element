@@ -7,8 +7,8 @@
   "version": "1.0.0",
   "main": "pp-element.js",
   "devDependencies": {},
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+  "scripts": {    
+    "compile":"terser --output pp-element.min.js --compress --mangle --comments false -- pp-element.js "
   },
   "repository": {
     "type": "git",
