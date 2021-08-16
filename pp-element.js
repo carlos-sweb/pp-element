@@ -15,6 +15,11 @@
   }
 
 })(function( root , exports , _is , _events ) {
+  // ===========================================================================
+  //Funcion Each
+  var each = function( arr , func ){
+      arr.forEach( func )
+  }
   // Creamos referencia para obtener un mayor minify
   var isE = _is.isElement,
   isS = _is.isString,
@@ -123,7 +128,6 @@
    **/
   on = function( el,  eventName , func ){
     isE( el , function( element ){
-
       if( isS( eventName ) && isF( func ) ){
           element.addEventListener( eventName , function( e ){
               func.bind(this)( e )
@@ -139,7 +143,7 @@
   trigger = function( el, eventName ){
     isE( el , function( element ){
         isS( eventName , function( name ){
-             el.dispatchEvent(new Event('click'));
+             el.dispatchEvent(new Event(eventName));
         } )
     })
   },
@@ -166,9 +170,7 @@
    *@return {Number} - Retorna el valor del ancho del elemento
    **/
   width  = function( el ){
-    return isE( el , function( element ){
-        return element.offsetWidth;
-    } )
+    return isE( el ) ? el.offsetWidth : null;
   },
   // ===========================================================================
   /**
@@ -176,9 +178,7 @@
    *@return {Number} - Retorna el valor del alto del elemento
    **/
   height = function( el ){
-    return isE( el, function( element ){
-      return element.offsetHeight;
-    })
+    return isE( el ) ? el.offsetHeight : null;
   },
   // ===========================================================================
   // Main Object
@@ -196,13 +196,11 @@
   proto.addClass = function( styleClass ){
       if( isE( this.elem)){
           addClass( this.elem , styleClass )
-      }
-      if( isA( this.elem) ){
-        this.elem.forEach( function( elem ){
+      }else if( isA( this.elem) ){
+        each( this.elem , function( elem ){
           addClass( elem , styleClass )
-        })
+        } )
       }
-
   }
   // ===========================================================================
   /**
@@ -213,13 +211,11 @@
   proto.removeClass = function( styleClass ){
       if( isE( this.elem ) ){
           removeClass( this.elem , styleClass )
-      }
-      if( isA( this.elem) ){
-        this.elem.forEach( function( elem ){
+      }else if( isA( this.elem) ){
+        each( this.elem , function( elem ){
             removeClass( elem , styleClass )
-        });
+        } )
       }
-
   }
   // ===========================================================================
   /**
@@ -230,14 +226,12 @@
   proto.hasClass = function( styleClass ){
       if( isE( this.elem ) ){
         return hasClass( this.elem ,styleClass  )
-      }
-      if( isA( this.elem ) ){
-        this.elem.forEach(function( elem ){
+      }else if( isA( this.elem ) ){
+        each( this.elem , function( elem ){
           hasClass( elem ,styleClass  )
-        });
-        return null;
+        })
       }
-
+      return null;
   }
   // ===========================================================================
   /**
@@ -248,12 +242,10 @@
   proto.html = function( _html ){
       if( isE( this.elem) ){
         html( this.elem , _html );
-      }
-
-      if( isA( this.elem ) ){
-        this.elem.forEach(function( elem ){
+      }else if( isA( this.elem ) ){
+        each( this.elem, function( elem ){
            html( elem , _html)
-        });
+        })
       }
 
   }
@@ -266,9 +258,8 @@
   proto.text = function( _text ){
       if( isE( this.elem) ){
         text( this.elem , _text );
-      }
-      if( isA( this.elem ) ){
-        this.elem.forEach(function(elem){
+      }else if( isA( this.elem ) ){
+        each( this.elem , function(elem){
           text( elem , _text);
         })
       }
@@ -282,13 +273,11 @@
   proto.on = function( eventName , func ){
       if( isE( this.elem) ){
           on.bind(this)( this.elem , eventName , func );
-      }
-      if( isA( this.elem) ){
-        this.elem.forEach(function( elem ){
+      }else if( isA( this.elem) ){
+        each( this.elem , function( elem ){
             on.bind(this)( elem , eventName , func );
         }.bind(this))
       }
-
   }
   // ===========================================================================
   /**
@@ -299,14 +288,11 @@
   proto.trigger = function( eventName ){
       if( isE( this.elem ) ){
           trigger( this.elem , eventName )
-      }
-
-      if( isA( this.elem ) ){
-        this.elem.forEach(function( elem ){
+      }else if( isA( this.elem ) ){
+        each( this.elem , function( elem ){
            trigger( elem , eventName )
-        });
+        } )
       }
-
   }
   // ===========================================================================
   /**
@@ -318,9 +304,9 @@
 
       if( isS( attribute ) ){
           if( isA( this.elem ) ){
-              this.elem.forEach( function( elem ){
+              each( this.elem , function( elem ){
                   attr( elem , attribute , value );
-              } );
+              } )
               return null;
           }else{
             return attr( this.elem , attribute , value );
@@ -331,9 +317,9 @@
           var keyAttr = Object.keys( attribute );
           for( var i = 0; i < keyAttr.length ; i++ ){
             if( isA( this.elem ) ){
-                this.elem.forEach( function( elem ){
+                each( this.elem , function( elem ){
                     attr( elem , keyAttr[i] , attribute[keyAttr[i]] );
-                } );
+                })
             }else{
                 attr( this.elem , keyAttr[i] , attribute[keyAttr[i]] );
             }
@@ -349,10 +335,7 @@
    *@return Retorna el Ancho
    **/
   proto.height = function(){
-    if( isE( this.elem ) ){
-        return height( this.elem );
-    }
-    return null;
+    return isE( this.elem ) ?  height( this.elem ) : null;
   }
   // ===========================================================================
   /**
@@ -361,10 +344,7 @@
    *@return Retorna el Alto
    **/
   proto.width = function(){
-    if( isE( this.elem ) ){
-      return width( this.elem );
-    }
-    return null;
+    return isE( this.elem ) ?  width( this.elem ) : null;
   }
   // ===========================================================================
   /**
@@ -373,18 +353,15 @@
    *@param {String} _value - valor que se desea setear
    **/
   proto.value = function( _value ){
-
+    // VERIFICAMOS QUE EL ELEM SEA UN ELEMENTO O UN ARRAY
     if( isE( this.elem ) ){
       return value( this.elem , _value );
-    }
-
-    if( isA( this.elem ) && isS( _value ) ){
-      this.elem.forEach(function( elem ){
+    }else if( isA( this.elem ) && isS( _value ) ){
+      each( this.elem , function( elem ){
           value( elem , _value );
-      });
-      return null;
+      } )
     }
-
+    return null;
   }
   // ===========================================================================
   var MainFunc = function( elem ){

@@ -17,10 +17,10 @@
 <p id="title" >Hola a todos</p>
 
 <ul id="lista" >
-  <li>Lista uno</li>
-  <li>Lista dos</li>
-  <li>Lista tres</li>
-  <li>Lista cuatro</li>
+  <li data-item="AABB" >Lista uno</li>
+  <li data-item="CCTY" >Lista dos</li>
+  <li data-item="PPOU" >Lista tres</li>
+  <li data-item="ZZXY" >Lista cuatro</li>
 </ul>
 
 <script src="https://cdn.jsdelivr.net/npm/pp-is@latest/pp-is.min.js" ></script>
@@ -37,6 +37,12 @@
   })
   console.log( li.attr('data-src') );
 
+  li.on('click',function( e , a){
+    console.log(e);
+    console.log(a);
+    console.log("Te estamos Escuchando");
+  });
+
   var title = ppElement( "#title" );
   console.log( title );
   title.attr( 'data-src' , 'links' );
@@ -46,7 +52,7 @@
     "data-algo":"aaaaa"
   } );
 
-  
+
 
   console.log( title.attr('data-src') );
 
