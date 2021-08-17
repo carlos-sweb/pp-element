@@ -302,9 +302,10 @@
   }
   // ===========================================================================
   /**
-   *@name element#text
+   *@name element#on
    *@function
-   *@param {String} _text - Texto que se desea agregar
+   *@param {String} eventName - Nombre del evento
+   *@param {Function} func - Funcion a ejecutar
    **/
   proto.on = function( eventName , func ){
       var _el = this.elem;
@@ -318,9 +319,9 @@
   }
   // ===========================================================================
   /**
-   *@name element#text
+   *@name element#trigger
    *@function
-   *@param {String} _text - Texto que se desea agregar
+   *@param {String} eventName - Nombre del Evento a Ejecutar
    **/
   proto.trigger = function( eventName ){
       var _el = this.elem;

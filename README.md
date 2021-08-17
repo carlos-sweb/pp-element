@@ -90,7 +90,58 @@ elem.data('myAttribute',null);
 ```
 
 ### css
+Read , set or remove css propertys.
+
+```javascript
+var elem = ppElement("#title")
+//Read attribute
+console.log( elem.css('backgroundColor') );
+//Set Attributes
+elem.css('backgroundColor','blue')
+//OR
+elem.css({
+  'backgroundColor':'blue',
+  'zIndex':'20',
+  'textAlign':'center'
+})
+//remove Attribute
+elem.css('zIndex',null);
+```
+
 ### text
+Add text in element call innerText Function
+
+```javascript
+var elem = ppElement("#title")
+elem.text('Hello');
+```
+
 ### html
+
+add html code in element call innerHTML Function
+
+```javascript
+var elem = ppElement("#title")
+elem.html('Hello <strong>World</strong>');
+```
+
 ### on  
+Lisen event
+
+```javascript
+var elem = ppElement("#title")
+elem.on('click',function( event , element ){
+    //Single Element
+    element.addClass('green');
+});
+
+```
+
 ### trigger
+
+trigger event
+
+```javascript
+var elem = ppElement("#title")
+elem.trigger('click')
+```
