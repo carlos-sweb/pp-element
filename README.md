@@ -52,6 +52,22 @@ if( elem.hasClass('active') ){
 ```
 
 ### attr
+Read , set or remove attributes.
+
+```javascript
+var elem = ppElement("#title")
+//Read attribute
+console.log( elem.attr('myAttribute') );
+//Set Attributes
+elem.attr('myAttribute','myValue')
+//OR
+elem.attr({
+  'myAttribute1':'myValue1',
+  'myAttribute2':'myValue2'
+})
+//remove Attribute
+elem.attr('myAttribute',null);
+```
 
 
 
