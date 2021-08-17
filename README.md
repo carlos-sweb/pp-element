@@ -72,6 +72,23 @@ elem.attr('myAttribute',null);
 
 
 ### data
+Read , set or remove attributes with prefix ´data-´
+
+```javascript
+var elem = ppElement("#title")
+//Read attribute
+console.log( elem.attr('myAttribute') );
+//Set Attributes
+elem.data('myAttribute','myValue')
+//OR
+elem.data({
+  'myAttribute1':'myValue1',
+  'myAttribute2':'myValue2'
+})
+//remove Attribute
+elem.data('myAttribute',null);
+```
+
 ### css
 ### text
 ### html
