@@ -14,3 +14,15 @@ Or
 ```console
 npm i pp-element --save
 ```
+## Methods
+
+### addClass
+### removeClass
+### hasClass
+### attr
+### data
+### css
+### text
+### html
+### on  
+### trigger

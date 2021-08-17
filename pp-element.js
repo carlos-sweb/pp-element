@@ -196,10 +196,11 @@
    *@param {String} styleClass - Nombre de la clase que se desea agregar
    **/
   proto.addClass = function( styleClass ){
-      if( isE( this.elem)){
-          addClass( this.elem , styleClass )
-      }else if( isA( this.elem) ){
-        each( this.elem , function( elem ){
+      var _el = this.elem;
+      if( isE( _el )){
+          addClass( _el  , styleClass )
+      }else if( isA( _el ) ){
+        each( _el  , function( elem ){
           addClass( elem , styleClass )
         } )
       }
@@ -211,10 +212,11 @@
    *@param {String} styleClass - Nombre de la clase que se desea remover
    **/
   proto.removeClass = function( styleClass ){
-      if( isE( this.elem ) ){
-          removeClass( this.elem , styleClass )
-      }else if( isA( this.elem) ){
-        each( this.elem , function( elem ){
+      var _el = this.elem;
+      if( isE( _el ) ){
+          removeClass( _el , styleClass )
+      }else if( isA( _el) ){
+        each( _el , function( elem ){
             removeClass( elem , styleClass )
         } )
       }
@@ -226,8 +228,9 @@
    *@param {String} styleClass - Nombre de la clase que se desea verificar
    **/
   proto.hasClass = function( styleClass ){
-      if( isE( this.elem ) ){
-        return hasClass( this.elem ,styleClass  )
+      var _el = this.elem;
+      if( isE( _el ) ){
+        return hasClass( _el ,styleClass  )
       }
       return null;
   }
@@ -238,10 +241,11 @@
    *@param {String} _html - Codigo html para agregar
    **/
   proto.html = function( _html ){
-      if( isE( this.elem) ){
-        html( this.elem , _html );
-      }else if( isA( this.elem ) ){
-        each( this.elem, function( elem ){
+      var _el = this.elem;
+      if( isE( _el ) ){
+        html( _el  , _html );
+      }else if( isA( _el  ) ){
+        each( _el , function( elem ){
            html( elem , _html)
         })
       }
@@ -253,10 +257,11 @@
    *@param {String} _text - Texto que se desea agregar
    **/
   proto.text = function( _text ){
-      if( isE( this.elem) ){
-        text( this.elem , _text );
-      }else if( isA( this.elem ) ){
-        each( this.elem , function(elem){
+      var _el = this.elem;
+      if( isE( _el ) ){
+        text( _el  , _text );
+      }else if( isA( _el  ) ){
+        each( _el  , function(elem){
           text( elem , _text);
         })
       }
@@ -268,10 +273,11 @@
    *@param {String} _text - Texto que se desea agregar
    **/
   proto.on = function( eventName , func ){
-      if( isE( this.elem) ){
-          on.bind(this)( this.elem , eventName , func );
-      }else if( isA( this.elem) ){
-        each( this.elem , function( elem ){
+      var _el = this.elem;
+      if( isE( _el ) ){
+          on.bind(this)( _el  , eventName , func );
+      }else if( isA( _el ) ){
+        each( _el  , function( elem ){
             on.bind(this)( elem , eventName , func );
         }.bind(this))
       }
@@ -283,10 +289,11 @@
    *@param {String} _text - Texto que se desea agregar
    **/
   proto.trigger = function( eventName ){
-      if( isE( this.elem ) ){
-          trigger( this.elem , eventName )
-      }else if( isA( this.elem ) ){
-        each( this.elem , function( elem ){
+      var _el = this.elem;
+      if( isE( _el ) ){
+          trigger( _el , eventName )
+      }else if( isA( _el ) ){
+        each( _el , function( elem ){
            trigger( elem , eventName )
         } )
       }
@@ -299,27 +306,28 @@
    *@param {String} value - Valor para la propoerty css
    **/
   proto.css = function( property , value ){
+      var _el = this.elem;
       // -----------------------------------------------------------------------
       if( isS( property ) ){
-          if( isA( this.elem ) ){
-              each( this.elem , function( elem ){
+          if( isA( _el ) ){
+              each( _el , function( elem ){
                   css( elem , property , value );
               } )
               return null;
           }else{
-            return css( this.elem , property , value );
+            return css( _el , property , value );
           }
       }
       // -----------------------------------------------------------------------
       if( isO( property ) ){
           var keyAttr = Object.keys( property );
           for( var i = 0; i < keyAttr.length ; i++ ){
-            if( isA( this.elem ) ){
-                each( this.elem , function( elem ){
+            if( isA( _el ) ){
+                each( _el , function( elem ){
                     css( elem , keyAttr[i] , property[keyAttr[i]] );
                 })
             }else{
-                css( this.elem , keyAttr[i] , property[keyAttr[i]] );
+                css( _el , keyAttr[i] , property[keyAttr[i]] );
             }
           }
           return null;
@@ -333,27 +341,28 @@
    *@param {String} _text - Texto que se desea agregar
    **/
   proto.attr = function( attribute , value ){
+      var _el = this.elem;
       // -----------------------------------------------------------------------
       if( isS( attribute ) ){
-          if( isA( this.elem ) ){
-              each( this.elem , function( elem ){
+          if( isA( _el ) ){
+              each( _el , function( elem ){
                   attr( elem , attribute , value );
               } )
               return null;
           }else{
-            return attr( this.elem , attribute , value );
+            return attr( _el , attribute , value );
           }
       }
       // -----------------------------------------------------------------------
       if( isO( attribute ) ){
           var keyAttr = Object.keys( attribute );
           for( var i = 0; i < keyAttr.length ; i++ ){
-            if( isA( this.elem ) ){
-                each( this.elem , function( elem ){
+            if( isA( _el ) ){
+                each( _el , function( elem ){
                     attr( elem , keyAttr[i] , attribute[keyAttr[i]] );
                 })
             }else{
-                attr( this.elem , keyAttr[i] , attribute[keyAttr[i]] );
+                attr( _el , keyAttr[i] , attribute[keyAttr[i]] );
             }
           }
           return null;
@@ -386,7 +395,8 @@
    *@return Retorna el Ancho
    **/
   proto.height = function(){
-    return isE( this.elem ) ?  height( this.elem ) : null;
+    var _el = this.elem;
+    return isE( _el ) ?  height( _el ) : null;
   }
   // ===========================================================================
   /**
@@ -395,7 +405,8 @@
    *@return Retorna el Alto
    **/
   proto.width = function(){
-    return isE( this.elem ) ?  width( this.elem ) : null;
+    var _el = this.elem;
+    return isE( _el ) ?  width( _el ) : null;
   }
   // ===========================================================================
   /**
@@ -404,11 +415,12 @@
    *@param {String} _value - valor que se desea setear
    **/
   proto.value = function( _value ){
+    var _el = this.elem;
     // VERIFICAMOS QUE EL ELEM SEA UN ELEMENTO O UN ARRAY
-    if( isE( this.elem ) ){
-      return value( this.elem , _value );
-    }else if( isA( this.elem ) && isS( _value ) ){
-      each( this.elem , function( elem ){
+    if( isE( _el ) ){
+      return value( _el , _value );
+    }else if( isA( _el ) && isS( _value ) ){
+      each( _el , function( elem ){
           value( elem , _value );
       } )
     }
@@ -419,7 +431,7 @@
     // =========================================================================
     if( isS( elem )  ){
           try{
-            var querySelectorAll = document.querySelectorAll( elem );
+            var querySelectorAll = document.querySelectorAll( elem );              
             if( querySelectorAll.length === 1 ){
               return new element( querySelectorAll[0] );
             }else{
