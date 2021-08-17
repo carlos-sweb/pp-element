@@ -198,10 +198,22 @@
   proto.addClass = function( styleClass ){
       var _el = this.elem;
       if( isE( _el )){
+        if( isS(styleClass) ){
           addClass( _el  , styleClass )
+        }else if( isA(styleClass) ){
+          each(styleClass,function( style){
+            addClass( _el  , style )
+          })
+        }
       }else if( isA( _el ) ){
         each( _el  , function( elem ){
-          addClass( elem , styleClass )
+          if( isS(styleClass) ){
+            addClass( elem , styleClass )
+          }else if( isA( styleClass)){
+            each( styleClass,function( style){
+                addClass( elem , style )
+            });
+          }
         } )
       }
   }
@@ -212,14 +224,26 @@
    *@param {String} styleClass - Nombre de la clase que se desea remover
    **/
   proto.removeClass = function( styleClass ){
-      var _el = this.elem;
-      if( isE( _el ) ){
-          removeClass( _el , styleClass )
-      }else if( isA( _el) ){
-        each( _el , function( elem ){
-            removeClass( elem , styleClass )
-        } )
+    var _el = this.elem;
+    if( isE( _el )){
+      if( isS(styleClass) ){
+        removeClass( _el  , styleClass )
+      }else if( isA(styleClass) ){
+        each(styleClass,function( style){
+          removeClass( _el  , style )
+        })
       }
+    }else if( isA( _el ) ){
+      each( _el  , function( elem ){
+        if( isS(styleClass) ){
+          removeClass( elem , styleClass )
+        }else if( isA( styleClass)){
+          each( styleClass,function( style){
+              removeClass( elem , style )
+          });
+        }
+      } )
+    }
   }
   // ===========================================================================
   /**
@@ -431,7 +455,7 @@
     // =========================================================================
     if( isS( elem )  ){
           try{
-            var querySelectorAll = document.querySelectorAll( elem );              
+            var querySelectorAll = document.querySelectorAll( elem );
             if( querySelectorAll.length === 1 ){
               return new element( querySelectorAll[0] );
             }else{

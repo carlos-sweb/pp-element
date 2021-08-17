@@ -30,6 +30,9 @@
 
   var li = ppElement('#lista>li');
 
+  li.addClass('list');
+  li.addClass(['list-item','item-active','item-orange'])
+
   li.attr( 'data-src' , 'links' );
   li.attr({
     "contry":"chile",
@@ -75,6 +78,9 @@
     "contry":"chile",
     "pin":"2040"
   })
+
+  title.addClass('title5')
+  title.addClass(['title-is1','title-blue','title-md'])
 
   console.log( title.data('id'));
   console.log( title.data('pin'));
