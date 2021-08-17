@@ -20,7 +20,7 @@ npm i pp-element --save
 Add class the element.
 
 ```javascript
-var elem = element("#title")
+var elem = ppElement("#title")
 //Option1 - Single class
 elem.addClass('title')
 //Option2 - Array Class
