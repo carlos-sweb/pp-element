@@ -1,3 +1,9 @@
+/*!!
+ * Power Panel Element <https://github.com/carlos-sweb/pp-element>
+ * @author Carlos Illesca
+ * @version 1.0.1 (2020/08/17 01:11 AM)
+ * Released under the MIT License
+ */
 (function(factory) {
   var root = typeof self == 'object' && self.self === self && self ||
             typeof global == 'object' && global.global === global && global;

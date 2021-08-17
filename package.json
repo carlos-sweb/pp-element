@@ -4,7 +4,7 @@
   },
   "name": "pp-element",
   "description": "Simple Element manipulation",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "main": "pp-element.js",
   "devDependencies": {},
   "scripts": {
