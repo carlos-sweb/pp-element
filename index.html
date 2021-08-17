@@ -37,11 +37,22 @@
   })
   console.log( li.attr('data-src') );
 
-  li.on('click',function( e , a){
-    console.log(e);
-    console.log(a);
+  li.on('click',function( event , elem ){
+    elem.addClass('oiejifjrjfieorjiejifjrefjirejfire')
     console.log("Te estamos Escuchando");
   });
+
+  li.css('color','red');
+
+  li.data('type','LIST');
+  li.data({
+    "pin":"3070",
+    "mode":"production"
+  });
+  console.log("------------------------------------------------");
+  console.log( li.data('pin') );
+  console.log("------------------------------------------------");
+
 
   var title = ppElement( "#title" );
   console.log( title );
@@ -52,9 +63,24 @@
     "data-algo":"aaaaa"
   } );
 
-
-
   console.log( title.attr('data-src') );
+
+  title.css('color',"silver");
+  title.css('z-index','100');
+
+
+  title.data('id',20);
+  title.data({
+    "code":"20b",
+    "contry":"chile",
+    "pin":"2040"
+  })
+
+  console.log( title.data('id'));
+  console.log( title.data('pin'));
+
+  console.log( title.css('color') );
+
 
 </script>
 </body>

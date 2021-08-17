@@ -25,7 +25,8 @@
   isS = _is.isString,
   isA = _is.isArray,
   isF = _is.isFunction,
-  isU = _is.isUndefined;
+  isU = _is.isUndefined,
+  isO = _is.isObject;
   // ===========================================================================
   /**
    *@param {NodeElement} el - Elemento DOM para ser afectado
@@ -36,8 +37,6 @@
           isS( styleClass , function( sc ){
               element.classList.add(sc);
           })
-          // Se Podria extender esta clase
-          // para recibir un array de clases
       })
   },
   // ===========================================================================
@@ -46,9 +45,9 @@
   *@param {String} styleClass - Nombre de la clase css ha remover
   */
   removeClass = function( el , styleClass ){
-        isE(el, function( element ){
+        isE(el, function( elem ){
             isS(styleClass,function( sc ){
-                element.classList.remove( sc );
+                elem.classList.remove( sc );
             })
         })
   },
@@ -58,9 +57,9 @@
    *@param {String} styleClass - Nombre de lca clase css para verificar
    */
   hasClass = function( el , styleClass ){
-    return isE(el,function(element){
+    return isE(el,function(elem){
       return isS(styleClass,function( sc ){
-          return element.classList.contains(sc);
+          return elem.classList.contains(sc);
       })
     })
   },
@@ -71,32 +70,36 @@
    *@param {String} value - Valor para el attributo
    */
   attr = function( el , attribute , value ){
-      return isE( el , function( element ){
+      return isE( el , function( elem ){
             return isS( attribute , function( attr ){
                   if( isU( value ) ){
-                    return element.getAttribute( attr );
+                    return elem.getAttribute( attr );
                   }else if( _is.isNull( value ) ){
-                    return element.removeAttribute( attr );
+                    return elem.removeAttribute( attr );
                   }else{
-                    return element.setAttribute( attr , value);
+                    return elem.setAttribute( attr , value);
                   }
             } );
       });
   },
   // ===========================================================================
-  css = function(){
-    /*
-    var elem = $('h1')
-    elem.css('background-color')          // read property
-    elem.css('background-color', '#369')  // set property
-    elem.css('background-color', '')      // remove property
-
-    // set multiple properties:
-    elem.css({ backgroundColor: '#8EE', fontSize: 28 })
-
-    // read multiple properties:
-    elem.css(['backgroundColor', 'fontSize'])['fontSize']
-    */
+  /**
+   *@param {NodeElement} el - Elemento DOM para ser afectado
+   *@param {String} property - Nombre del attributo css para manipular
+   *@param {String} value - Valor para el attributo
+   */
+  css = function( el , property , value ){
+      return isE( el , function( elem ){
+            return isS( property , function( attr ){
+                  if( isU( value ) ){
+                    return elem.style[attr];
+                  }else if( _is.isNull( value ) ){
+                    return elem.style[attr] = "";
+                  }else{
+                    return elem.style[attr] = value;
+                  }
+            } );
+      });
   },
   // ===========================================================================
   /**
@@ -105,10 +108,9 @@
    *
    **/
   html = function( el , html ){
-      isE(el,function(element){
-          element.innerHTML = html;
+      isE(el,function(elem){
+          elem.innerHTML = html;
       })
-
   },
   // ===========================================================================
   /**
@@ -116,8 +118,8 @@
    *@param {String} text - texto ha agregar
    **/
   text = function( el  , text ){
-    isE(el,function(element){
-        element.innerText = text;
+    isE(el,function(elem){
+        elem.innerText = text;
     })
   },
   // ===========================================================================
@@ -127,10 +129,10 @@
    *@param {Function} func - Funcion que se ejecutara
    **/
   on = function( el,  eventName , func ){
-    isE( el , function( element ){
+    isE( el , function( elem ){
       if( isS( eventName ) && isF( func ) ){
-          element.addEventListener( eventName , function( e ){
-              func.bind(this)( e )
+          elem.addEventListener( eventName , function( e ){
+              func.bind(this)( e , new element(e.currentTarget) )
           }.bind(this) , false );
       }
     }.bind(this))
@@ -141,9 +143,9 @@
    *@param {String} eventName - Nombre del evento
    **/
   trigger = function( el, eventName ){
-    isE( el , function( element ){
+    isE( el , function( elem ){
         isS( eventName , function( name ){
-             el.dispatchEvent(new Event(eventName));
+             elem.dispatchEvent(new Event(eventName));
         } )
     })
   },
@@ -154,13 +156,13 @@
    *
    **/
   value = function( el , val ){
-    return isE( el , function( element ){
+    return isE( el , function( elem ){
         if( !_is.isNull( val ) && !isU( val ) ){
-           return el.value = val;
+           return elem.value = val;
         }else if( isF( val ) ){
-           return val( el.value , val  )
+           return val( elem.value , val  )
         }else{
-          return el.value;
+          return elem.value;
         }
     })
   },
@@ -226,10 +228,6 @@
   proto.hasClass = function( styleClass ){
       if( isE( this.elem ) ){
         return hasClass( this.elem ,styleClass  )
-      }else if( isA( this.elem ) ){
-        each( this.elem , function( elem ){
-          hasClass( elem ,styleClass  )
-        })
       }
       return null;
   }
@@ -247,7 +245,6 @@
            html( elem , _html)
         })
       }
-
   }
   // ===========================================================================
   /**
@@ -296,12 +293,47 @@
   }
   // ===========================================================================
   /**
+   *@name element#css
+   *@function
+   *@param {String} property - Propiedad css
+   *@param {String} value - Valor para la propoerty css
+   **/
+  proto.css = function( property , value ){
+      // -----------------------------------------------------------------------
+      if( isS( property ) ){
+          if( isA( this.elem ) ){
+              each( this.elem , function( elem ){
+                  css( elem , property , value );
+              } )
+              return null;
+          }else{
+            return css( this.elem , property , value );
+          }
+      }
+      // -----------------------------------------------------------------------
+      if( isO( property ) ){
+          var keyAttr = Object.keys( property );
+          for( var i = 0; i < keyAttr.length ; i++ ){
+            if( isA( this.elem ) ){
+                each( this.elem , function( elem ){
+                    css( elem , keyAttr[i] , property[keyAttr[i]] );
+                })
+            }else{
+                css( this.elem , keyAttr[i] , property[keyAttr[i]] );
+            }
+          }
+          return null;
+      }
+      // -----------------------------------------------------------------------
+  }
+  // ===========================================================================
+  /**
    *@name element#text
    *@function
    *@param {String} _text - Texto que se desea agregar
    **/
   proto.attr = function( attribute , value ){
-
+      // -----------------------------------------------------------------------
       if( isS( attribute ) ){
           if( isA( this.elem ) ){
               each( this.elem , function( elem ){
@@ -312,8 +344,8 @@
             return attr( this.elem , attribute , value );
           }
       }
-
-      if( _is.isObject( attribute ) ){
+      // -----------------------------------------------------------------------
+      if( isO( attribute ) ){
           var keyAttr = Object.keys( attribute );
           for( var i = 0; i < keyAttr.length ; i++ ){
             if( isA( this.elem ) ){
@@ -326,7 +358,26 @@
           }
           return null;
       }
-
+      // -----------------------------------------------------------------------
+  }
+  // ===========================================================================
+  /**
+   *@name element#data
+   *@function
+   *@param {String} attribute - Texto que se desea agregar
+   *@param {String} value - Valor
+   **/
+  proto.data = function( attribute , value ){
+      return isS( attribute ) ? this.attr('data-'+attribute,value) :(
+        isO( attribute ) ?  this.attr(function(attr){
+          var vtr = {};
+          var attrKey = Object.keys( attr );
+          for( var i = 0 ; i < attrKey.length ; i++ ){
+              vtr[ 'data-'+attrKey[i] ] = attr[ attrKey[i] ] ;
+          }
+          return vtr;
+        }(attribute))   : null
+      );
   }
   // ===========================================================================
   /**
