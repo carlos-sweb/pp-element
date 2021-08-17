@@ -2,19 +2,18 @@
   var root = typeof self == 'object' && self.self === self && self ||
             typeof global == 'object' && global.global === global && global;
   if (typeof define === 'function' && define.amd) {
-    define(['ppIs', 'ppEvents' , 'exports'], function(ppIs,ppEvents,exports) {
-      root.ppElement = factory(root, exports, ppIs , ppEvents );
+    define(['ppIs' , 'exports'], function(ppIs,exports) {
+      root.ppElement = factory(root, exports, ppIs );
     });
   } else if (typeof exports !== 'undefined') {
-    var ppEvents = {}, ppIs = {};
-    try { ppEvents = require('pp-events'); } catch (e) {}
+    var ppIs = {};
     try { ppIs = require('pp-is'); } catch (e) {}
-    factory(root, exports, ppIs , ppEvents );
+    factory(root, exports, ppIs  );
   } else {
-    root.ppElement = factory(root, {},  root.ppIs , root.ppEvents );
+    root.ppElement = factory(root, {},  root.ppIs  );
   }
 
-})(function( root , exports , _is , _events ) {
+})(function( root , exports , _is  ) {
   // ===========================================================================
   //Funcion Each
   var each = function( arr , func ){

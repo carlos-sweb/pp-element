@@ -3,11 +3,11 @@
     "pp-is": "^1.0.2"
   },
   "name": "pp-element",
-  "description": "⇒",
+  "description": "Simple Element manipulation",
   "version": "1.0.0",
   "main": "pp-element.js",
   "devDependencies": {},
-  "scripts": {    
+  "scripts": {
     "compile":"terser --output pp-element.min.js --compress --mangle --comments false -- pp-element.js "
   },
   "repository": {
@@ -16,7 +16,17 @@
   },
   "keywords": [
     "DOMElement",
-    "element"
+    "element",
+    "addClass",
+    "removeClass",
+    "hasClass",
+    "attr",
+    "css",
+    "data",
+    "text",
+    "html",
+    "on",
+    "trigger"
   ],
   "author": "Carlos Illesca",
   "license": "MIT",
