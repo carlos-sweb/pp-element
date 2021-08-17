@@ -17,6 +17,19 @@ npm i pp-element --save
 ## Methods
 
 ### addClass
+Add class the element.
+
+```javascript
+var elem = element("#title")
+//Option1 - Single class
+elem.addClass('title')
+//Option2 - Array Class
+elem.addClass(['primary','center','middle'])
+//Options3 - String multi class
+elem.addClass('text-blue text-xs text-bold')
+```
+
+
 ### removeClass
 ### hasClass
 ### attr

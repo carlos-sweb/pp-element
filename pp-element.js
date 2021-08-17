@@ -35,7 +35,12 @@
   var addClass = function( el , styleClass ){
       isE(el,function(element){
           isS( styleClass , function( sc ){
-              element.classList.add(sc);
+              var scArray = sc.trim().split(" ");
+              each( scArray , function( _sc ){
+                if( _sc !== '' ){
+                  try{element.classList.add(_sc);}catch(ErrorClassList){}
+                }
+              })
           })
       })
   },
@@ -47,7 +52,12 @@
   removeClass = function( el , styleClass ){
         isE(el, function( elem ){
             isS(styleClass,function( sc ){
-                elem.classList.remove( sc );
+                var scArray = sc.trim().split(" ");
+                each( scArray , function( _sc ){
+                  if( _sc !== '' ){
+                    try{elem.classList.remove( _sc );}catch(ErrorClassList){}
+                  }
+                })
             })
         })
   },
